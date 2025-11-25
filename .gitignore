@@ -19,7 +19,14 @@
 .vscode/
 
 # Assets (Temp Setting)
-/[Aa]ssets/_MAIN
+/[Aa]ssets/_MAIN/Audio
+/[Aa]ssets/_MAIN/Audio.meta
+/[Aa]ssets/_MAIN/Graphics
+/[Aa]ssets/_MAIN/Graphics.meta
+/[Aa]ssets/_MAIN/Resources
+/[Aa]ssets/_MAIN/Resources.meta
+/[Aa]ssets/_MAIN/Scenes
+/[Aa]ssets/_MAIN/Scenes.meta
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
