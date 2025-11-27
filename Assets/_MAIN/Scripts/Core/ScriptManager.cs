@@ -9,22 +9,22 @@ public class ScriptManager : MonoBehaviour
 {
     [SerializeField]
     TextAsset scriptFile;
-
     [SerializeField]
     TextMeshProUGUI speakerText;
-
+    [SerializeField]
+    GameObject speakerSprite;
     [SerializeField]
     TextMeshProUGUI dialogueText;
-
     [SerializeField]
     private GameObject choiceButtonPrefab;
-
     [SerializeField]
     private Transform choiceButtonContainer;
-
+    [SerializeField]
+    private Image choiceBackground;
     [SerializeField]
     float charsPerSecond = 45f;
 
+    public VisualNovelLayoutDirector director;
     private readonly float shakeAmount = 1.1f;
     private bool isChoiceAvailable = false;
     private Tween dialogueTween;
@@ -37,7 +37,23 @@ public class ScriptManager : MonoBehaviour
         dialogueText.SetText(" ");
         dialogueText.ForceMeshUpdate(true);
 
+        director.AddCharacter("chino01");
+        Invoke("test1", 2f);
+        Invoke("test2", 4f);
+
+
         _currentScript = ScriptParser.Parse(scriptFile.text);
+        NextStep();
+    }
+
+    void test1()
+    {
+        director.AddCharacter("chino01");
+    }
+
+    void test2()
+    {
+        director.AddCharacter("chino01");
     }
 
     void Update()
@@ -51,16 +67,6 @@ public class ScriptManager : MonoBehaviour
                 NextStep();
         }
 
-    }
-
-    public void DebugReload()
-    {
-        speakerText.SetText(" ");
-        speakerText.ForceMeshUpdate(true);
-        dialogueText.SetText(" ");
-        dialogueText.ForceMeshUpdate(true);
-
-        _currentScript = ScriptParser.Parse(scriptFile.text);
     }
 
     private void NextStep()
@@ -94,6 +100,9 @@ public class ScriptManager : MonoBehaviour
         if (action.Type == "spk")
         {
             string speaker = action.GetParam("name");
+            if (speaker == "")
+                speakerSprite.SetActive(false);
+
             speakerText.SetText(speaker);
             speakerText.ForceMeshUpdate(true);
             NextStep();
@@ -117,6 +126,11 @@ public class ScriptManager : MonoBehaviour
             Debug.Log("ScriptManager :: Show Choices");
             isChoiceAvailable = true;
 
+            // WTF.. is this shit
+            Color tempColor = choiceBackground.color;
+            tempColor.a = 0.8f;
+            choiceBackground.color = tempColor;
+
             foreach (var choice in action.Choices)
             {
                 string text = choice["content"];
@@ -129,14 +143,28 @@ public class ScriptManager : MonoBehaviour
                     {
                         foreach (Transform child in choiceButtonContainer)
                             Destroy(child.gameObject);
-
                         isChoiceAvailable = false;
+
+                        // shitty code
+                        tempColor.a = 0f;
+                        choiceBackground.color = tempColor;
+
                         _currentScript.JumpTo(target);
                         NextStep();
                     });
             }
             return;
         }
+    }
+
+    public void DebugReload()
+    {
+        speakerText.SetText(" ");
+        speakerText.ForceMeshUpdate(true);
+        dialogueText.SetText(" ");
+        dialogueText.ForceMeshUpdate(true);
+
+        _currentScript = ScriptParser.Parse(scriptFile.text);
     }
 
     private bool IsPointerOverInteractiveUI()

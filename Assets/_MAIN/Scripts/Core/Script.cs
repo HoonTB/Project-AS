@@ -42,4 +42,10 @@ public class Script
         _currentIndex = _sceneMap[sceneName] - 1; // Continue() 호출 시 해당 인덱스가 되도록 -1
         Debug.Log($"Script :: Jump to scene: {sceneName} (Index: {_currentIndex + 1})");
     }
+
+    public void Save()
+    {
+        // TODO: _currentIndex 값을 받아와서 파일에 기록 or DB에 기록
+        // 20251126_191933_SAVE -> { _currentIndex, expData, ... }
+    }
 }
