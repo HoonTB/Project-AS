@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using PrimeTween;
 using TMPro;
 using UnityEngine;
@@ -37,23 +38,35 @@ public class ScriptManager : MonoBehaviour
         dialogueText.SetText(" ");
         dialogueText.ForceMeshUpdate(true);
 
-        director.AddCharacter("chino01");
-        Invoke("test1", 2f);
-        Invoke("test2", 4f);
-
+        StartCoroutine(TestAnim());
 
         _currentScript = ScriptParser.Parse(scriptFile.text);
         NextStep();
     }
 
-    void test1()
+    IEnumerator TestAnim()
     {
-        director.AddCharacter("chino01");
-    }
-
-    void test2()
-    {
-        director.AddCharacter("chino01");
+        director.AddCharacter("chino01", VisualNovelLayoutDirector.EntranceType.Center);
+        yield return new WaitForSeconds(1f);
+        director.AddCharacter("chino02", VisualNovelLayoutDirector.EntranceType.Left);
+        yield return new WaitForSeconds(1f);
+        director.AddCharacter("chino03", VisualNovelLayoutDirector.EntranceType.Right);
+        yield return new WaitForSeconds(1f);
+        director.RemoveCharacter("chino02", VisualNovelLayoutDirector.EntranceType.Left);
+        yield return new WaitForSeconds(1f);
+        director.RemoveCharacter("chino03", VisualNovelLayoutDirector.EntranceType.Right);
+        yield return new WaitForSeconds(1f);
+        director.PlayAction("chino01", VisualNovelLayoutDirector.ActionType.Jump);
+        yield return new WaitForSeconds(1f);
+        director.PlayAction("chino01", VisualNovelLayoutDirector.ActionType.Shake);
+        yield return new WaitForSeconds(1f);
+        director.PlayAction("chino01", VisualNovelLayoutDirector.ActionType.Nod);
+        yield return new WaitForSeconds(1f);
+        director.PlayAction("chino01", VisualNovelLayoutDirector.ActionType.Punch);
+        yield return new WaitForSeconds(1f);
+        director.AddCharacter("chino02", VisualNovelLayoutDirector.EntranceType.Left);
+        yield return new WaitForSeconds(1f);
+        director.AddCharacter("chino03", VisualNovelLayoutDirector.EntranceType.Center);
     }
 
     void Update()
