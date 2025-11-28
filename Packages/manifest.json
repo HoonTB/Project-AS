@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.heavycaffiner.ide.antigravity": "https://github.com/heavycaffeiner/com.heavycaffeiner.ide.antigravity.git",
+    "com.heavycaffiner.ide.antigravity": "https://github.com/heavycaffeiner/UnityAntigravityIDE.git",
     "com.kyrylokuzyk.primetween": "file:../Assets/Plugins/PrimeTween/internal/com.kyrylokuzyk.primetween.tgz",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.10.2",

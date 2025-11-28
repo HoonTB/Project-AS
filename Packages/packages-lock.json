@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.heavycaffiner.ide.antigravity": {
-      "version": "https://github.com/heavycaffeiner/com.heavycaffeiner.ide.antigravity.git",
+      "version": "https://github.com/heavycaffeiner/UnityAntigravityIDE.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
