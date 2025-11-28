@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,8 +17,6 @@ public class VisualNovelLayoutDirector : MonoBehaviour
     public float charWidth = 350f;
     public float defaultDuration = 0.5f;
     public float moveDistance = 800f;
-
-
 
     // ========================= [1. 등장 (Entry)] =========================
     public void AddCharacter(string fileName, EntranceType type)

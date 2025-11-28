@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 public class ScriptParser
 {
@@ -32,7 +31,6 @@ public class ScriptParser
             {
                 string tagName = tagMatch.Groups[1].Value;
                 string attrString = tagMatch.Groups[2].Value;
-                Debug.Log($"ScriptParser :: Tag: {tagName} {attrString}");
 
                 var scriptAction = new ScriptAction { Type = tagName };
 

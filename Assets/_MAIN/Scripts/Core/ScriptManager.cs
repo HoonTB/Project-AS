@@ -3,6 +3,7 @@ using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ScriptManager : MonoBehaviour
@@ -30,6 +31,8 @@ public class ScriptManager : MonoBehaviour
     private Tween dialogueTween;
     private Script _currentScript;
 
+    public static string NextScriptPath = "";
+
     void Start()
     {
         speakerText.SetText(" ");
@@ -37,7 +40,25 @@ public class ScriptManager : MonoBehaviour
         dialogueText.SetText(" ");
         dialogueText.ForceMeshUpdate(true);
 
-        _currentScript = ScriptParser.Parse(scriptFile.text);
+        if (!string.IsNullOrEmpty(NextScriptPath))
+        {
+            TextAsset loadedScript = Resources.Load<TextAsset>($"NovelScripts/{NextScriptPath}");
+            if (loadedScript != null)
+            {
+                _currentScript = ScriptParser.Parse(loadedScript.text);
+                NextScriptPath = "";
+            }
+            else
+            {
+                Debug.LogError($"ScriptManager :: Cannot find script: {NextScriptPath}");
+                _currentScript = ScriptParser.Parse(scriptFile.text);
+            }
+        }
+        else
+        {
+            _currentScript = ScriptParser.Parse(scriptFile.text);
+        }
+
         NextStep();
     }
 
@@ -144,6 +165,7 @@ public class ScriptManager : MonoBehaviour
             if (speaker == "")
                 speakerSprite.SetActive(false);
 
+            speaker = VariableManager.Instance.ReplaceVariables(speaker);
             speakerText.SetText(speaker);
             speakerText.ForceMeshUpdate(true);
             NextStep();
@@ -152,6 +174,7 @@ public class ScriptManager : MonoBehaviour
         if (action.Type == "msg")
         {
             string dialogue = action.GetParam("content");
+            dialogue = VariableManager.Instance.ReplaceVariables(dialogue);
             DisplayDialogue(dialogue);
             return;
         }
@@ -174,7 +197,7 @@ public class ScriptManager : MonoBehaviour
 
             foreach (var choice in action.Choices)
             {
-                string text = choice["content"];
+                string text = VariableManager.Instance.ReplaceVariables(choice["content"]);
                 string target = choice["goto"];
                 GameObject buttonObj = Instantiate(choiceButtonPrefab, choiceButtonContainer);
                 buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = text;
@@ -196,6 +219,34 @@ public class ScriptManager : MonoBehaviour
             }
             return;
         }
+        if (action.Type == "var")
+        {
+            foreach (var entry in action.Params)
+            {
+                VariableManager.Instance.SetVariable(entry.Key, entry.Value.ToString());
+            }
+            NextStep();
+            return;
+        }
+        if (action.Type == "add")
+        {
+            foreach (var entry in action.Params)
+            {
+                VariableManager.Instance.AddVariable(entry.Key, entry.Value.ToString());
+            }
+            NextStep();
+            return;
+        }
+        if (action.Type == "scene")
+        {
+            string sceneName = action.GetParam("file");
+            string nextScript = action.GetParam("script");
+            Debug.Log($"ScriptManager :: Load Scene: {sceneName}, Next Script: {nextScript}");
+
+            NextScriptPath = nextScript;
+            SceneManager.LoadScene(sceneName);
+            return;
+        }
     }
 
     public void DebugReload()
@@ -210,11 +261,11 @@ public class ScriptManager : MonoBehaviour
 
     private bool IsPointerOverInteractiveUI()
     {
-    PointerEventData eventData = new(EventSystem.current)
-    {
-      position = Input.mousePosition
-    };
-    List<RaycastResult> results = new();
+        PointerEventData eventData = new(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+        List<RaycastResult> results = new();
         EventSystem.current.RaycastAll(eventData, results);
 
         foreach (RaycastResult result in results)
