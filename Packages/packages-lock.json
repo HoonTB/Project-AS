@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "com.heavycaffiner.ide.antigravity": {
-      "version": "https://github.com/heavycaffeiner/UnityAntigravityIDE.git",
+    "com.heavycaffiner.ide.vscodeuniversal": {
+      "version": "https://github.com/heavycaffeiner/Unity-VSC-OSS-Editor.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.test-framework": "1.1.31"
       },
-      "hash": "bbdfe7c97d7c662964e425bd56cc3728846e09ff"
+      "hash": "c1af1ea41258153175064bd887bac75f917a1760"
     },
     "com.kyrylokuzyk.primetween": {
       "version": "file:../Assets/Plugins/PrimeTween/internal/com.kyrylokuzyk.primetween.tgz",
@@ -56,15 +56,6 @@
       "depth": 1,
       "source": "builtin",
       "dependencies": {}
-    },
-    "com.unity.ide.visualstudio": {
-      "version": "2.0.25",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.test-framework": "1.1.31"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
       "version": "1.14.2",
