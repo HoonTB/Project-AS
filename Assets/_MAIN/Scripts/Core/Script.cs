@@ -37,6 +37,13 @@ public class Script
         return null;
     }
 
+    public ScriptAction PeekNext()
+    {
+        if (_currentIndex < _actions.Count - 1)
+            return _actions[_currentIndex + 1];
+        return null;
+    }
+
     public void JumpTo(string labelName)
     {
         _currentIndex = _labelMap[labelName] - 1; // Continue() 호출 시 해당 인덱스가 되도록 -1

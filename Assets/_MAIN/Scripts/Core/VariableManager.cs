@@ -62,7 +62,7 @@ public class VariableManager
 
     public string ReplaceVariables(string text)
     {
-        if (string.IsNullOrEmpty(text)) return text;
+        if (string.IsNullOrEmpty(text) || !text.Contains("{")) return text;
 
         foreach (var kvp in _variables)
         {
